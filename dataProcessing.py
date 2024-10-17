@@ -33,6 +33,17 @@ def processingData(data, text, datasetName):
     with open(neighborPath, 'w') as js:
         json.dump(neighbor, js, indent=2)
 
+    # 保存train_id, val_id, test_id, 供后面非few-shot使用
+    trainPath = os.path.join(dstRoot, 'train.json')
+    validPath = os.path.join(dstRoot, 'valid.json')
+    testPath = os.path.join(dstRoot, 'test.json')
+    with open(trainPath, 'w') as js:
+        json.dump(data.train_id.tolist(), js, indent=2)
+    with open(validPath, 'w') as js:
+        json.dump(data.val_id.tolist(), js, indent=2)
+    with open(testPath, 'w') as js:
+        json.dump(data.test_id.tolist(), js, indent=2)
+
 
 if __name__ == '__main__':
     data, text = get_raw_text_cora(use_text=True)
