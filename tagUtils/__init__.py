@@ -42,23 +42,27 @@ def fewShotSplit(dataRoot, labelCount, examplePerClass):
     return neighbor, text, selectedIdx, testIdx
 
 class TAGDdataset(Dataset):
-    def __init__(self, neighbor, text, idxList):
+    def __init__(self, neighbor, text, idxList, maskFormat=False):
         self.neighbor = neighbor
         self.text = text
         self.idxList = idxList
+        self.maskFormat = maskFormat
 
     def __getitem__(self, idx):
         idx = self.idxList[idx]
         label = self.neighbor[idx]['label']
+        if not self.maskFormat:
+            return self.text[idx], label
         neighbor = self.neighbor[idx]['neighbor']
         selectedNeighbor = random.sample(neighbor, min(len(neighbor), 4))
-        return self.text[idx], label
-        text = self.text[idx].split('\n')[0].strip()
+        text = self.text[idx]
+        # text = self.text[idx].split('\n')[0].strip()
         text = f'<unk> is `{text}`.'
 
         snStr = []
         for idx in selectedNeighbor:
-            snStr.append(self.text[idx].split("\n")[0].strip())
+            snStr.append(self.text[idx])
+            # snStr.append(self.text[idx].split("\n")[0].strip())
             snStr[-1] = f'`{snStr[-1]}`'
         text = text + ' It is link to ' + ', '.join(snStr) + '.'
         return text, label
