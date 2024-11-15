@@ -108,6 +108,6 @@ if __name__ == '__main__':
         for m in models:
             for fn in fewShotNums:
                 try:
-                    main(dc[0], dc[1], 8, fewShotNum=fn, modelType=m, device='cuda:7')
+                    main(dc[0], dc[1], 8, fewShotNum=fn, modelType=m, device='cuda:0')
                 except:
                     pass
